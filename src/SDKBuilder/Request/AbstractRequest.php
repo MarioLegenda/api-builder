@@ -6,7 +6,7 @@ use SDKBuilder\Exception\RequestException;
 use SDKBuilder\Exception\RequestParametersException;
 use SDKBuilder\RestoreDefaultsInterface;
 
-abstract class AbstractRequest implements RestoreDefaultsInterface
+abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInterface
 {
     /**
      * @var string $method
@@ -47,10 +47,10 @@ abstract class AbstractRequest implements RestoreDefaultsInterface
     }
     /**
      * @param string $method
-     * @return AbstractRequest
+     * @return RequestInterface
      * @throws RequestException
      */
-    public function setMethod(string $method) : AbstractRequest
+    public function setMethod(string $method) : RequestInterface
     {
         $validMethods = array('get', 'post');
 
@@ -61,23 +61,6 @@ abstract class AbstractRequest implements RestoreDefaultsInterface
         $this->method = strtolower($method);
 
         return $this;
-    }
-    /**
-     * @param $client
-     * @return AbstractRequest
-     */
-    public function setClient(RequestClient $client) : AbstractRequest
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-    /**
-     * @return mixed
-     */
-    public function getClient() : RequestClient
-    {
-        return $this->client;
     }
     /**
      * @param string $name

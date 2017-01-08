@@ -2,10 +2,8 @@
 
 namespace SDKBuilder\Processor\Factory;
 
- use FindingAPI\Core\Request\Request;
- use SDKBuilder\Exception\SDKBuilderException;
  use SDKBuilder\Processor\ProcessorInterface;
- use SDKBuilder\Request\AbstractRequest;
+ use SDKBuilder\Request\RequestInterface;
  use SDKBuilder\RestoreDefaultsInterface;
 
  class ProcessorFactory implements RestoreDefaultsInterface
@@ -50,10 +48,10 @@ namespace SDKBuilder\Processor\Factory;
         return $this;
     }
     /**
-     * @param AbstractRequest $request
+     * @param RequestInterface $request
      * @return array
      */
-    public function createProcessors(AbstractRequest $request) : array
+    public function createProcessors(RequestInterface $request) : array
     {
         $method = $request->getMethod();
 

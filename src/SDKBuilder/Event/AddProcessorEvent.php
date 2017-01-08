@@ -3,13 +3,13 @@
 namespace SDKBuilder\Event;
 
 use SDKBuilder\Processor\Factory\ProcessorFactory;
-use SDKBuilder\Request\AbstractRequest;
+use SDKBuilder\Request\RequestInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class AddProcessorEvent extends Event
 {
     /**
-     * @var AbstractRequest $request
+     * @var RequestInterface $request
      */
     private $request;
     /**
@@ -19,9 +19,9 @@ class AddProcessorEvent extends Event
     /**
      * AddProcessorEvent constructor.
      * @param ProcessorFactory $processorFactory
-     * @param AbstractRequest $request
+     * @param RequestInterface $request
      */
-    public function __construct(ProcessorFactory $processorFactory, AbstractRequest $request)
+    public function __construct(ProcessorFactory $processorFactory, RequestInterface $request)
     {
         $this->processorFactory = $processorFactory;
         $this->request = $request;
@@ -34,9 +34,9 @@ class AddProcessorEvent extends Event
         return $this->processorFactory;
     }
     /**
-     * @return AbstractRequest
+     * @return RequestInterface
      */
-    public function getRequest() : AbstractRequest
+    public function getRequest() : RequestInterface
     {
         return $this->request;
     }

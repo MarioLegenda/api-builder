@@ -2,27 +2,27 @@
 
 namespace SDKBuilder\Event;
 
-use SDKBuilder\Request\AbstractRequest;
+use SDKBuilder\Request\RequestInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class PreProcessRequestEvent extends Event
 {
     /**
-     * @var AbstractRequest $request
+     * @var RequestInterface $request
      */
     private $request;
     /**
      * PreRequestEvent constructor.
-     * @param AbstractRequest $request
+     * @param RequestInterface $request
      */
-    public function __construct(AbstractRequest $request)
+    public function __construct(RequestInterface $request)
     {
         $this->request = $request;
     }
     /**
-     * @return AbstractRequest
+     * @return RequestInterface
      */
-    public function getRequest() : AbstractRequest
+    public function getRequest() : RequestInterface
     {
         return $this->request;
     }

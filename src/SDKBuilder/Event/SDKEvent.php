@@ -9,4 +9,5 @@ class SDKEvent
     CONST POST_PROCESS_REQUEST_EVENT = 'sdk.post_process_request';
     CONST PRE_SEND_REQUEST_EVENT = 'sdk.pre_send_request_event';
     CONST POST_SEND_REQUEST_EVENT = 'sdk.post_send_request_event';
+    CONST SEND_REQUEST_EVENT = 'sdk.send_request_event';
 }

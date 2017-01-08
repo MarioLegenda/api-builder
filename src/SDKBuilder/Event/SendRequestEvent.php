@@ -3,20 +3,22 @@
 namespace SDKBuilder\Event;
 
 use SDKBuilder\Request\RequestInterface;
-use Symfony\Component\EventDispatcher\Event;
+use SDKBuilder\SDK\SDKInterface;
 
-class PostProcessRequestEvent extends Event
+class SendRequestEvent
 {
     /**
      * @var RequestInterface $request
      */
     private $request;
     /**
-     * PreRequestEvent constructor.
-     * @param RequestInterface $request
+     * @var SDKInterface $api
      */
-    public function __construct(RequestInterface $request)
+    private $api;
+
+    public function __construct(SDKInterface $api, RequestInterface $request)
     {
+        $this->api = $api;
         $this->request = $request;
     }
     /**
@@ -25,5 +27,12 @@ class PostProcessRequestEvent extends Event
     public function getRequest() : RequestInterface
     {
         return $this->request;
+    }
+    /**
+     * @return SDKInterface
+     */
+    public function getApi() : SDKInterface
+    {
+        return $this->api;
     }
 }

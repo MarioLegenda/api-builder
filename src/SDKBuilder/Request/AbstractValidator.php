@@ -10,7 +10,7 @@ abstract class AbstractValidator
     abstract function validate() : void;
 
     /**
-     * @var AbstractRequest $request
+     * @var RequestInterface $request
      */
     private $request;
     /**
@@ -19,9 +19,9 @@ abstract class AbstractValidator
     private $errors = array();
     /**
      * AbstractValidator constructor.
-     * @param AbstractRequest $request
+     * @param RequestInterface $request
      */
-    public function __construct(AbstractRequest $request)
+    public function __construct(RequestInterface $request)
     {
         $this->request = $request;
     }
@@ -52,9 +52,9 @@ abstract class AbstractValidator
         return $this;
     }
     /**
-     * @return AbstractRequest
+     * @return RequestInterface
      */
-    public function getRequest() : AbstractRequest
+    public function getRequest() : RequestInterface
     {
         return $this->request;
     }

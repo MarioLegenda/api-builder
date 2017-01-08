@@ -4,6 +4,7 @@ namespace SDKBuilder\Request;
 
 use SDKBuilder\Exception\RequestException;
 use SDKBuilder\Exception\RequestParametersException;
+use SDKBuilder\Response\ResponseClient;
 use SDKBuilder\RestoreDefaultsInterface;
 
 abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInterface
@@ -65,10 +66,10 @@ abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInter
     /**
      * @param string $name
      * @param $value
-     * @return RequestParameters
+     * @return RequestInterface
      * @throws RequestParametersException
      */
-    public function setGlobalParameter(string $name, $value) : RequestParameters
+    public function setGlobalParameter(string $name, $value) : RequestInterface
     {
         if (!$this->globalParameters->hasParameter($name)) {
             throw new RequestParametersException('global_parameter \''.$name.'\' does not exist');
@@ -76,7 +77,7 @@ abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInter
 
         $this->globalParameters->getParameter($name)->setValue($value);
 
-        return $this->globalParameters;
+        return $this;
     }
     /**
      * @return RequestParameters
@@ -88,10 +89,10 @@ abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInter
     /**
      * @param string $name
      * @param $value
-     * @return RequestParameters
+     * @return RequestInterface
      * @throws RequestParametersException
      */
-    public function setSpecialParameter(string $name, $value) : RequestParameters
+    public function setSpecialParameter(string $name, $value) : RequestInterface
     {
         if (!$this->specialParameters->hasParameter($name)) {
             throw new RequestParametersException('special_parameter \''.$name.'\' does not exist');
@@ -99,7 +100,7 @@ abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInter
 
         $this->specialParameters->getParameter($name)->setValue($value);
 
-        return $this->specialParameters;
+        return $this;
     }
     /**
      * @return RequestParameters
@@ -120,7 +121,7 @@ abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInter
      * @param string $request
      * @return mixed
      */
-    public function sendRequest(string $request)
+    public function sendRequest(string $request) : ResponseClient
     {
         return $this->client
             ->setUri($request)

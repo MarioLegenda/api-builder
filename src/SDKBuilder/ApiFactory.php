@@ -4,10 +4,10 @@ namespace SDKBuilder;
 
 use SDKBuilder\Event\SDKEvent;
 use SDKBuilder\Exception\SDKBuilderException;
-use SDKBuilder\Request\AbstractRequest;
 use SDKBuilder\Request\AbstractValidator;
 use SDKBuilder\Request\BasicRequestValidator;
 use SDKBuilder\Request\Request;
+use SDKBuilder\Request\RequestInterface;
 use SDKBuilder\Request\RequestParameters;
 use SDKBuilder\Request\Method\MethodParameters;
 use SDKBuilder\Request\ValidatorsProcessor;
@@ -136,7 +136,7 @@ class ApiFactory
         return $this->addDefaults($apiKey, $config);
     }
 
-    private function createRequest(string $requestClass, string $apiKey, array $config) : AbstractRequest
+    private function createRequest(string $requestClass, string $apiKey, array $config) : RequestInterface
     {
         $request = new $requestClass(
             new RequestParameters($config['sdk'][$apiKey]['global_parameters']),

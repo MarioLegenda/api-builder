@@ -2,19 +2,19 @@
 
 namespace SDKBuilder\Processor;
 
-use SDKBuilder\Request\AbstractRequest;
+use SDKBuilder\Request\RequestInterface;
 
 abstract class AbstractProcessor
 {
     /**
-     * @var AbstractRequest $request
+     * @var RequestInterface $request
      */
     protected $request;
     /**
      * UrlProcessor constructor.
-     * @param AbstractRequest $request
+     * @param RequestInterface $request
      */
-    public function __construct(AbstractRequest $request)
+    public function __construct(RequestInterface $request)
     {
         $this->request = $request;
     }

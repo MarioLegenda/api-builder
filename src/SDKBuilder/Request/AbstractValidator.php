@@ -2,7 +2,9 @@
 
 namespace SDKBuilder\Request;
 
-abstract class AbstractValidator
+use SDKBuilder\ValidatorInterface;
+
+abstract class AbstractValidator implements ValidatorInterface
 {
     /**
      * @void
@@ -43,9 +45,9 @@ abstract class AbstractValidator
     /**
      * @param string $errorKey
      * @param array $error
-     * @return AbstractValidator
+     * @return ValidatorInterface
      */
-    public function addError(string $errorKey, array $error) : AbstractValidator
+    public function addError(string $errorKey, array $error) : ValidatorInterface
     {
         $this->errors[$errorKey][] = $error;
 

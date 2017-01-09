@@ -2,6 +2,8 @@
 
 namespace SDKBuilder\Request;
 
+use SDKBuilder\ValidatorInterface;
+
 class ValidatorsProcessor
 {
     /**
@@ -13,9 +15,9 @@ class ValidatorsProcessor
      */
     private $validators = array();
     /**
-     * @param AbstractValidator $validator
+     * @param ValidatorInterface $validator
      */
-    public function addValidator(AbstractValidator $validator)
+    public function addValidator(ValidatorInterface $validator)
     {
         $this->validators[] = $validator;
     }

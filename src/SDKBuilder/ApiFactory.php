@@ -106,8 +106,8 @@ class ApiFactory
 
                 $v = new $validator($this->request);
 
-                if (!$v instanceof AbstractValidator) {
-                    throw new SDKBuilderException('Invalid validator. Validator should extend '.AbstractValidator::class);
+                if (!$v instanceof ValidatorInterface) {
+                    throw new SDKBuilderException('Invalid validator. Validator should extend '.ValidatorInterface::class);
                 }
 
                 $validatorProcessor->addValidator($v);

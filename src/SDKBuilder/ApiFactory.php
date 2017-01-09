@@ -46,7 +46,6 @@ class ApiFactory
         $this->apiKey = $apiKey;
     }
     /**
-     * @param string $apiKey
      * @param array $config
      * @throws SDKBuilderException
      * @return SDKInterface

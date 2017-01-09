@@ -2,9 +2,9 @@
 
 namespace SDKBuilder\Processor\Get;
 
+use SDKBuilder\Dynamic\DynamicStorage;
 use SDKBuilder\Processor\AbstractProcessor;
 use SDKBuilder\Processor\ProcessorInterface;
-use FindingAPI\Core\ItemFilter\ItemFilterStorage;
 use SDKBuilder\Request\RequestInterface;
 use SDKBuilder\Processor\UrlifyInterface;
 
@@ -15,19 +15,19 @@ class GetDynamicProcessor extends AbstractProcessor implements ProcessorInterfac
      */
     private $processed = '';
     /**
-     * @var ItemFilterStorage $itemFilterStorage
+     * @var DynamicStorage $dynamicStorage
      */
-    private $itemFilterStorage;
+    private $dynamicStorage;
     /**
-     * GetItemFiltersProcessor constructor.
+     * GetDynamicProcessor constructor.
      * @param RequestInterface $request
-     * @param ItemFilterStorage $itemFilterStorage
+     * @param DynamicStorage $dynamicStorage
      */
-    public function __construct(RequestInterface $request, ItemFilterStorage $itemFilterStorage)
+    public function __construct(RequestInterface $request, DynamicStorage $dynamicStorage)
     {
         parent::__construct($request);
 
-        $this->itemFilterStorage = $itemFilterStorage;
+        $this->dynamicStorage = $dynamicStorage;
     }
     /**
      * @return ProcessorInterface
@@ -37,14 +37,14 @@ class GetDynamicProcessor extends AbstractProcessor implements ProcessorInterfac
         $finalProduct = '';
         $count = 0;
 
-        $onlyAdded = $this->itemFilterStorage->filterAddedFilter();
+        $onlyAdded = $this->dynamicStorage->filterAddedDynamics();
 
         if (!empty($onlyAdded)) {
-            foreach ($onlyAdded as $name => $itemFilterItems) {
-                $itemFilter = $this->itemFilterStorage->getItemFilterInstance($name);
+            foreach ($onlyAdded as $name => $dynamicStorageItems) {
+                $dynamic = $this->dynamicStorage->getDynamicInstance($name);
 
-                if ($itemFilter instanceof UrlifyInterface) {
-                    $finalProduct.=$itemFilter->urlify($count);
+                if ($dynamic instanceof UrlifyInterface) {
+                    $finalProduct.=$dynamic->urlify($count);
                 }
 
                 $count++;

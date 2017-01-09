@@ -6,304 +6,7 @@ use SDKBuilder\Exception\DynamicException;
 
 class DynamicStorage
 {
-    /**
-     * @var array $itemFilters
-     */
-    private $dynamics = array(
-        'AuthorizedSellerOnly' => array (
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\AuthorizedSellerOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'AvailableTo' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\AvailableTo',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'BestOfferOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\BestOfferOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'CharityOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\CharityOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'Condition' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\Condition',
-            'value' => null,
-            'multiple_values' => true,
-            'date_time' => false,
-        ),
-        'Currency' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\Currency',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'EndTimeFrom' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\EndTimeFrom',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => true,
-        ),
-        'EndTimeTo' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\EndTimeTo',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => true,
-        ),
-        'ExcludeAutoPay' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\ExcludeAutoPay',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'ExcludeCategory' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\ExcludeCategory',
-            'value' => null,
-            'multiple_values' => true,
-            'date_time' => false,
-        ),
-        'ExcludeSeller' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\ExcludeSeller',
-            'value' => null,
-            'multiple_values' => true,
-            'date_time' => false,
-        ),
-        'ExpeditedShippingType' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\ExpeditedShippingType',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'FeaturedOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\FeaturedOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'FeedbackScoreMax' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\FeedbackScoreMax',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'FeedbackScoreMin' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\FeedbackScoreMin',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'FreeShippingOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\FreeShippingOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'GetItFastOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\GetItFastOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'HideDuplicateItems' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\HideDuplicateItems',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'ListedIn' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\ListedIn',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'ListingType' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\ListingType',
-            'value' => null,
-            'multiple_values' => true,
-            'date_time' => false,
-        ),
-        'LocalPickupOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\LocalPickupOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'LocalSearchOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\LocalSearchOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'LocatedIn' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\LocatedIn',
-            'value' => null,
-            'multiple_values' => true,
-            'date_time' => false,
-        ),
-        'LotsOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\LotsOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'MaxBids' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\MaxBids',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'MaxDistance' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\MaxDistance',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'MaxHandlingTime' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\MaxHandlingTime',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'SortOrder' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\SortOrder',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'BuyerPostalCode' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\BuyerPostalCode',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'PaginationInput' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\PaginationInput',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'MaxPrice' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\MaxPrice',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'MaxQuantity' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\MaxQuantity',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'MinBids' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\MinBids',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'MinPrice' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\MinPrice',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'MinQuantity' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\MinQuantity',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'ModTimeFrom' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\ModTimeFrom',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => true,
-        ),
-        'OutletSellerOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\OutletSellerOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'PaymentMethod' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\PaymentMethod',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'ReturnsAcceptedOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\ReturnsAcceptedOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'Seller' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\Seller',
-            'value' => null,
-            'multiple_values' => true,
-            'date_time' => false,
-        ),
-        'SellerBusinessType' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\SellerBusinessType',
-            'value' => null,
-            'multiple_values' => true,
-            'date_time' => false,
-        ),
-        'SoldItemsOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\SoldItemsOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'StartTimeFrom' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\StartTimeFrom',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => true,
-        ),
-        'StartTimeTo' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\StartTimeTo',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => true,
-        ),
-        'TopRatedSellerOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\TopRatedSellerOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'WorldOfGoodOnly' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\WorldOfGoodOnly',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        ),
-        'OutputSelector' => array(
-            'object' => 'FindingAPI\\Core\\ItemFilter'.'\\OutputSelector',
-            'value' => null,
-            'multiple_values' => false,
-            'date_time' => false,
-        )
-    );
-    /**
-     * ItemFilterStorage constructor.
-     */
-    public function __construct()
-    {
-        foreach ($this->dynamics as $dynamicName => $dynamic) {
-            $this->validateDynamic(array(
-                $dynamicName => $dynamic,
-            ));
-        }
-    }
+    private $dynamics = array();
     /**
      * @param string $name
      * @return mixed|null
@@ -316,7 +19,6 @@ class DynamicStorage
 
         return $this->dynamics[$name];
     }
-
     /**
      * @param array $dynamics
      * @param bool $includeEmpty
@@ -375,9 +77,9 @@ class DynamicStorage
     {
         $this->validateDynamic($configuration);
 
-        $itemFilterName = array_keys($configuration)[0];
+        $dynamicName = $configuration['name'];
 
-        $this->dynamics[$itemFilterName] = $configuration[$itemFilterName];
+        $this->dynamics[$dynamicName] = $configuration[$dynamicName];
     }
     /**
      * @param string $name
@@ -485,24 +187,26 @@ class DynamicStorage
 
     private function validateDynamic(array $configuration)
     {
-        $allowedKeys = array('object', 'value', 'multiple_values', 'date_time');
+        $allowedKeys = array('object', 'value', 'multiple_values', 'date_time', 'name');
 
-        $exceptionMessage = 'When adding new item dynamics, only one key, as the name of the new dynamic, and an array of that key with keys '.implode(', ', $allowedKeys);
+        foreach ($allowedKeys as $validKey) {
+            if (!array_key_exists($validKey, $configuration)) {
+                throw new DynamicException('Invalid dynamic. Missing dynamic configuration \''.$validKey.'\'');
+            }
 
-        if (count($configuration) > 1) {
-            throw new DynamicException($exceptionMessage);
-        }
+            if (!is_string($configuration[$validKey])) {
+                throw new DynamicException('Invalid dynamic. Every configuration entry in a dynamic has to be a string. '.gettype($configuration[$validKey]).' given for \''.$validKey.'\'');
+            }
 
-        $dynamicName = array_keys($configuration);
+            if ($validKey === 'object') {
+                if (!class_exists($configuration[$validKey])) {
+                    throw new DynamicException('Invalid dynamic. Provided class \''.$configuration[$validKey].'\' does not exist');
+                }
+            }
 
-        if (!is_string($dynamicName[0])) {
-            throw new DynamicException($exceptionMessage);
-        }
-
-        $configKeys = array_keys($configuration[$dynamicName[0]]);
-
-        if (!empty(array_diff($allowedKeys, $configKeys))) {
-            throw new DynamicException($exceptionMessage.' for item filter '.$dynamicName[0]);
+            if (array_key_exists($configuration['name'], $this->dynamics)) {
+                throw new DynamicException('Invalid dynamic. Dynamic with name \''.$configuration['name'].'\' already exists. Remove an already existing dynamic and add a new one');
+            }
         }
     }
 }

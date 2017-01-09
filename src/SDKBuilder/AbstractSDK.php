@@ -11,6 +11,7 @@ use SDKBuilder\Event\SDKEvent;
 use SDKBuilder\Event\SendRequestEvent;
 use SDKBuilder\Exception\SDKException;
 use SDKBuilder\Processor\Factory\ProcessorFactory;
+use SDKBuilder\Processor\Get\GetDynamicProcessor;
 use SDKBuilder\Processor\Get\GetRequestParametersProcessor;
 use SDKBuilder\Request\Method\MethodParameters;
 use SDKBuilder\Request\Method\Method;
@@ -24,6 +25,7 @@ use FindingAPI\Core\Exception\ConnectException;
 
 use SDKBuilder\Processor\RequestProducer;
 
+use SDKBuilder\SDKOfflineMode\SDKOfflineMode;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use SDKBuilder\Exception\MethodParametersException;
 
@@ -62,7 +64,7 @@ abstract class AbstractSDK implements SDKInterface
      */
     protected $responseBody;
     /**
-     * @var SDKOfflineMode\SDKOfflineMode
+     * @var SDKOfflineMode
      */
     protected $offlineMode;
     /**
@@ -99,6 +101,13 @@ abstract class AbstractSDK implements SDKInterface
         $this->offlineModeSwitch = $switch;
 
         return $this;
+    }
+    /**
+     * @return bool
+     */
+    public function isInOfflineMode() : bool
+    {
+        return $this->offlineModeSwitch;
     }
     /**
      * @param Method $method
@@ -141,6 +150,16 @@ abstract class AbstractSDK implements SDKInterface
     {
         if ($this->getRequest()->getMethod() === 'get') {
             $this->processorFactory->registerProcessor($this->getRequest()->getMethod(), GetRequestParametersProcessor::class);
+
+            $this->processorFactory->registerCallbackProcessor($this->getRequest()->getMethod(), function(RequestInterface $request) {
+                $dynamicStorage = $request->getDynamicStorage();
+
+                if (!empty($dynamicStorage)) {
+                    if ($request->getMethod() === 'get') {
+                        return new GetDynamicProcessor($request, $dynamicStorage);
+                    }
+                }
+            });
         }
 
         if ($this->eventDispatcher->hasListeners('sdk.add_processors')) {
@@ -161,12 +180,12 @@ abstract class AbstractSDK implements SDKInterface
         }
 
         if ($this->offlineModeSwitch === true) {
-            if (!$this->offlineMode instanceof \SDKOfflineMode\SDKOfflineMode and class_exists('SDKOfflineMode\\SDKOfflineMode')) {
+            if (!$this->offlineMode instanceof SDKOfflineMode) {
                 if ($this->getRequest()->getMethod() !== 'get') {
                     throw new SDKException('If this is your development environment and you are using SDKOfflineMode tool, you can only use it with \'get\' requests. If you are on a production server, it is advised to turn SDKOfflineMode of with AbstractSDK::switchOfflineMode(false)');
                 }
 
-                $this->offlineMode = new \SDKOfflineMode\SDKOfflineMode($this);
+                $this->offlineMode = new SDKOfflineMode($this);
             }
         }
 
@@ -182,10 +201,10 @@ abstract class AbstractSDK implements SDKInterface
         $this->validatorsProcessor->validate();
 
         if ($this->offlineModeSwitch === true) {
-            if ($this->offlineMode instanceof \SDKOfflineMode\SDKOfflineMode) {
-                if ($this->offlineMode->isResponseStored($this->getProcessedRequestString())) {
-                    return $this;
-                }
+            if ($this->offlineMode instanceof SDKOfflineMode) {
+                $this->responseBody = $this->offlineMode->getResponse();
+
+                return $this;
             }
         }
 

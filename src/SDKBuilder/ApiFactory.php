@@ -3,6 +3,7 @@
 namespace SDKBuilder;
 
 use SDKBuilder\Dynamic\DynamicStorage;
+use SDKBuilder\Dynamic\DynamicsValidator;
 use SDKBuilder\Event\SDKEvent;
 use SDKBuilder\Exception\SDKBuilderException;
 use SDKBuilder\Request\AbstractValidator;
@@ -95,7 +96,9 @@ class ApiFactory
 
         $validatorProcessor = new ValidatorsProcessor();
 
-        $validatorProcessor->addValidator(new BasicRequestValidator($this->request));
+        $validatorProcessor
+            ->addValidator(new BasicRequestValidator($this->request))
+            ->addValidator(new DynamicsValidator($this->request));
 
         if (array_key_exists('request_validators', $apiConfig)) {
             $validators = $apiConfig['request_validators'];

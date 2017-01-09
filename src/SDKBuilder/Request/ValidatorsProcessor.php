@@ -16,8 +16,9 @@ class ValidatorsProcessor
     private $validators = array();
     /**
      * @param ValidatorInterface $validator
+     * @return ValidatorsProcessor
      */
-    public function addValidator(ValidatorInterface $validator)
+    public function addValidator(ValidatorInterface $validator) : ValidatorsProcessor
     {
         $this->validators[] = $validator;
     }

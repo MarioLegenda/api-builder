@@ -2,8 +2,9 @@
 
 namespace SDKBuilder\Request;
 
-use SDKBuilder\Exception\RequestException;
-use SDKBuilder\Exception\RequestParametersException;
+use SDKBuilder\Exception\{
+    DeprecatedException, ObsoliteException, RequestException, RequestParametersException
+};
 
 class Parameter
 {
@@ -49,8 +50,9 @@ class Parameter
     private $valid = array();
     /**
      * Parameter constructor.
-     * @param array $parameter
      * @param string $parameterName
+     * @param array $parameter
+     * @throws RequestParametersException
      *
      * A Parameters has to have a name, type, valid, value and synonyms field
      */
@@ -276,11 +278,11 @@ class Parameter
         $errorMessages = array();
 
         if ($this->isObsolete()) {
-            throw new RequestParametersException(sprintf($this->errorMessage, $this->getName(), $this->getRepresentation()));
+            throw new ObsoliteException(sprintf($this->errorMessage, $this->getName(), $this->getRepresentation()));
         }
 
         if ($this->isDeprecated() and $this->shouldThrowExceptionIfDeprecated()) {
-            throw new RequestParametersException(sprintf($this->errorMessage, $this->getName(), $this->getRepresentation()));
+            throw new DeprecatedException(sprintf($this->errorMessage, $this->getName(), $this->getRepresentation()));
         }
 
         if ($this->isDeprecated()) {

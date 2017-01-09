@@ -2,22 +2,26 @@
 
 namespace SDKBuilder;
 
-use SDKBuilder\Dynamic\DynamicStorage;
-use SDKBuilder\Dynamic\DynamicsValidator;
+use SDKBuilder\Dynamic\ { DynamicStorage, DynamicsValidator };
+
 use SDKBuilder\Event\SDKEvent;
 use SDKBuilder\Exception\SDKBuilderException;
-use SDKBuilder\Request\AbstractValidator;
-use SDKBuilder\Request\BasicRequestValidator;
-use SDKBuilder\Request\Request;
-use SDKBuilder\Request\RequestInterface;
-use SDKBuilder\Request\RequestParameters;
-use SDKBuilder\Request\Method\MethodParameters;
-use SDKBuilder\Request\ValidatorsProcessor;
+
+use SDKBuilder\Request\ {
+    BasicRequestValidator,
+    Request,
+    RequestInterface,
+    RequestParameters,
+    Method\MethodParameters,
+    ValidatorsProcessor
+};
+
 use SDKBuilder\SDK\SDKInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use SDKBuilder\Processor\Factory\ProcessorFactory;
-use Symfony\Component\Config\Definition\Processor;
 use SDKBuilder\Configuration\Configuration;
+
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Config\Definition\Processor;
 
 class ApiFactory
 {
@@ -50,7 +54,6 @@ class ApiFactory
      * @throws SDKBuilderException
      * @return SDKInterface
      */
-
     public function createApi(array $config) : SDKInterface
     {
         $processor = new Processor();

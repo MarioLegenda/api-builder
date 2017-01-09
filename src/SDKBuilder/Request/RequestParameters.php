@@ -2,11 +2,7 @@
 
 namespace SDKBuilder\Request;
 
-use FindingAPI\Core\Exception\{ DeprecatedException };
-
-use GuzzleHttp\Psr7\Request;
-use SDKBuilder\Exception\RequestException;
-use SDKBuilder\Exception\RequestParametersException;
+use SDKBuilder\Exception\ { RequestException, RequestParametersException, DeprecatedException };
 
 class RequestParameters implements \IteratorAggregate, \ArrayAccess
 {
@@ -112,6 +108,8 @@ class RequestParameters implements \IteratorAggregate, \ArrayAccess
      * @param string $name
      * @param string $value
      * @return bool
+     * @throws RequestException
+     * @throws DeprecatedException
      */
     public function isValidParameter(string $name, string $value) : bool
     {
@@ -120,12 +118,6 @@ class RequestParameters implements \IteratorAggregate, \ArrayAccess
         }
 
         $parameter = $this->getParameter($name);
-
-        if ($parameter->isDeprecated()) {
-            if ($parameter->shouldThrowExceptionIfDeprecated()) {
-                throw new DeprecatedException('Request parameter '.$name.' seems to be deprecated. If you which to ignore it, catch DeprecatedException');
-            }
-        }
 
         if (!$parameter->isValid($value)) {
             throw new RequestException('Parameter '.$name.' exists but is not valid. This means that ebay supports exact list of values for this parameter. Valid values for this parameter are '.implode(', ', $parameter->getValid()));

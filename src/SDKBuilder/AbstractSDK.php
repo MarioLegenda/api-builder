@@ -2,32 +2,38 @@
 
 namespace SDKBuilder;
 
-use SDKBuilder\Event\AddProcessorEvent;
-use SDKBuilder\Event\PostProcessRequestEvent;
-use SDKBuilder\Event\PostSentRequestEvent;
-use SDKBuilder\Event\PreProcessRequestEvent;
-use SDKBuilder\Event\RequestEvent;
-use SDKBuilder\Event\SDKEvent;
-use SDKBuilder\Event\SendRequestEvent;
+use SDKBuilder\Event\ {
+    AddProcessorEvent,
+    PostProcessRequestEvent,
+    PostSentRequestEvent,
+    PreProcessRequestEvent,
+    RequestEvent,
+    SDKEvent,
+    SendRequestEvent
+};
+
 use SDKBuilder\Exception\SDKException;
-use SDKBuilder\Processor\Factory\ProcessorFactory;
-use SDKBuilder\Processor\Get\GetDynamicProcessor;
-use SDKBuilder\Processor\Get\GetRequestParametersProcessor;
-use SDKBuilder\Request\Method\MethodParameters;
-use SDKBuilder\Request\Method\Method;
-use SDKBuilder\Request\Parameter;
-use SDKBuilder\Request\RequestInterface;
-use SDKBuilder\Request\ValidatorsProcessor;
+
+use SDKBuilder\Processor\ {
+    Factory\ProcessorFactory,
+    Get\GetDynamicProcessor,
+    Get\GetRequestParametersProcessor
+};
+
+use SDKBuilder\Request\ {
+    Method\MethodParameters,
+    Method\Method,
+    Parameter,
+    RequestInterface,
+    ValidatorsProcessor
+};
+
 use SDKBuilder\SDK\SDKInterface;
-
-use GuzzleHttp\Exception\ServerException;
-use FindingAPI\Core\Exception\ConnectException;
-
 use SDKBuilder\Processor\RequestProducer;
-
 use SDKBuilder\SDKOfflineMode\SDKOfflineMode;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use SDKBuilder\Exception\MethodParametersException;
+
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 abstract class AbstractSDK implements SDKInterface
 {
@@ -325,10 +331,6 @@ abstract class AbstractSDK implements SDKInterface
             } else {
                 $this->responseBody = $this->getRequest()->sendRequest($this->processed)->getBody();
             }
-        } catch (ConnectException $e) {
-            throw new ConnectException('GuzzleHttp threw a ConnectException. Exception message is '.$e->getMessage());
-        } catch (ServerException $e) {
-            throw new ConnectException('GuzzleHttp threw an exception with message: \''.$e->getMessage().'\'');
         } catch (\Exception $e) {
             echo 'Generic exception caught with message: \''.$e->getMessage().'\'';
         }

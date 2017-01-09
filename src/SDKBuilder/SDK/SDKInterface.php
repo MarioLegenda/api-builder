@@ -9,7 +9,7 @@ use SDKBuilder\Request\RequestInterface;
 interface SDKInterface
 {
     /**
-     * @return void
+     * @return SDKInterface
      */
     public function send() : SDKInterface;
     /**
@@ -39,10 +39,6 @@ interface SDKInterface
      * @return array
      */
     public function getErrors() : array;
-    /**
-     * @void
-     */
-    public function getResponse();
     /**
      * @return SDKInterface
      */

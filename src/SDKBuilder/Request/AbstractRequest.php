@@ -2,9 +2,12 @@
 
 namespace SDKBuilder\Request;
 
-use SDKBuilder\Exception\DynamicException;
-use SDKBuilder\Exception\RequestException;
-use SDKBuilder\Exception\RequestParametersException;
+use SDKBuilder\Exception\ {
+    DynamicException,
+    RequestException,
+    RequestParametersException
+};
+
 use SDKBuilder\Response\ResponseClient;
 use SDKBuilder\RestoreDefaultsInterface;
 use SDKBuilder\Dynamic\DynamicStorage;

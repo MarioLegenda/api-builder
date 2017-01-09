@@ -2,10 +2,12 @@
 
 namespace SDKBuilder\Request;
 
+use SDKBuilder\Exception\DynamicException;
 use SDKBuilder\Exception\RequestException;
 use SDKBuilder\Exception\RequestParametersException;
 use SDKBuilder\Response\ResponseClient;
 use SDKBuilder\RestoreDefaultsInterface;
+use SDKBuilder\Dynamic\DynamicStorage;
 
 abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInterface
 {
@@ -26,14 +28,24 @@ abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInter
      */
     private $client;
     /**
+     * @var DynamicStorage $dynamicsStorage
+     */
+    protected $dynamicsStorage;
+    /**
      * AbstractRequest constructor.
      * @param RequestParameters $globalParameters
      * @param RequestParameters $specialParameters
+     * @param DynamicStorage $dynamicStorage
      */
-    public function __construct(RequestParameters $globalParameters, RequestParameters $specialParameters)
+    public function __construct(
+        RequestParameters $globalParameters,
+        RequestParameters $specialParameters,
+        DynamicStorage $dynamicStorage
+    )
     {
         $this->specialParameters = $specialParameters;
         $this->globalParameters = $globalParameters;
+        $this->dynamicsStorage = $dynamicStorage;
 
         $this->restoreDefaults();
 
@@ -108,6 +120,29 @@ abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInter
     public function getSpecialParameters() : RequestParameters
     {
         return $this->specialParameters;
+    }
+    /**
+     * @param string $dynamicName
+     * @param array $dynamicValue
+     * @return RequestInterface
+     * @throws DynamicException
+     */
+    public function addDynamic(string $dynamicName, array $dynamicValue) : RequestInterface
+    {
+        if (!$this->dynamicsStorage->hasDynamic($dynamicName)) {
+            throw new DynamicException('Dynamic \''.$dynamicName.'\' does not exists. Use '.RequestInterface::class.'::addDynamic() to add a new dynamic');
+        }
+
+        $this->dynamicsStorage->updateDynamicValue($dynamicName, $dynamicValue);
+
+        return $this;
+    }
+    /**
+     * @return DynamicStorage
+     */
+    public function getDynamicStorage() : DynamicStorage
+    {
+        return $this->dynamicsStorage;
     }
     /**
      * @void

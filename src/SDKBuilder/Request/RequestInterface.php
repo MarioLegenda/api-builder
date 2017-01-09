@@ -2,6 +2,7 @@
 
 namespace SDKBuilder\Request;
 
+use SDKBuilder\Dynamic\DynamicStorage;
 use SDKBuilder\Response\ResponseClient;
 
 interface RequestInterface
@@ -40,4 +41,14 @@ interface RequestInterface
      * @return ResponseClient
      */
     public function sendRequest(string $request) : ResponseClient;
+    /**
+     * @param string $dynamicName
+     * @param array $dynamicValue
+     * @return RequestInterface
+     */
+    public function addDynamic(string $dynamicName, array $dynamicValue) : RequestInterface;
+    /**
+     * @return DynamicStorage
+     */
+    public function getDynamicStorage() : DynamicStorage;
 }

@@ -2,6 +2,7 @@
 
 namespace SDKBuilder;
 
+use SDKBuilder\Dynamic\DynamicStorage;
 use SDKBuilder\Event\SDKEvent;
 use SDKBuilder\Exception\SDKBuilderException;
 use SDKBuilder\Request\AbstractValidator;
@@ -140,7 +141,8 @@ class ApiFactory
     {
         $request = new $requestClass(
             new RequestParameters($config['sdk'][$apiKey]['global_parameters']),
-            new RequestParameters($config['sdk'][$apiKey]['special_parameters'])
+            new RequestParameters($config['sdk'][$apiKey]['special_parameters']),
+            new DynamicStorage()
         );
 
         return $request;

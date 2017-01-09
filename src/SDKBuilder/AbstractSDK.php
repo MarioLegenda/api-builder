@@ -326,7 +326,11 @@ abstract class AbstractSDK implements SDKInterface
     {
         $instanceString = $method->getInstanceObjectString();
 
-        $object = new $instanceString($this->getRequest()->getGlobalParameters(), $this->getRequest()->getSpecialParameters());
+        $object = new $instanceString(
+            $this->getRequest()->getGlobalParameters(),
+            $this->getRequest()->getSpecialParameters(),
+            $this->getRequest()->getDynamicStorage()
+        );
 
         if (!$object instanceof RequestInterface) {
             throw new MethodParametersException(get_class($object).' has to extend '.RequestInterface::class);

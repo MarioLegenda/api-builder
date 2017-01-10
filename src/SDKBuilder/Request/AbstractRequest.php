@@ -147,6 +147,11 @@ abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInter
     {
         return $this->dynamicsStorage;
     }
+
+    public function getClient()
+    {
+        return $this->client;
+    }
     /**
      * @void
      */

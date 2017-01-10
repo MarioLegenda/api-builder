@@ -24,18 +24,18 @@ class SDKOfflineMode
     {
         $this->apiObject = $api;
 
-        $this->requestHandle = fopen(__DIR__.'/requests.csv', 'a+');
-
         if (!file_exists(__DIR__.'/responses')) {
             mkdir(__DIR__.'/responses');
         }
     }
     /**
-     * @return \FindingAPI\Core\Response\ResponseInterface
+     * @return string
      */
     public function getResponse()
     {
         $request = $this->apiObject->getProcessedRequestString();
+        $this->requestHandle = fopen(__DIR__.'/requests.csv', 'a+');
+
         if (!$this->isResponseStored($request)) {
             $requests = file(__DIR__.'/requests.csv');
 
@@ -50,12 +50,17 @@ class SDKOfflineMode
                 $client = new Client();
 
                 $guzzleResponse = $client->request($this->apiObject->getRequest()->getMethod(), $request);
+
+                if ($guzzleResponse->getStatusCode() < 200 or $guzzleResponse->getStatusCode() > 200) {
+                    return false;
+                }
+
                 $stringResponse = (string) $guzzleResponse->getBody();
                 file_put_contents($responseFile, $stringResponse);
 
                 fclose($this->requestHandle);
 
-                return $this->apiObject->getResponseBody($stringResponse);
+                return $stringResponse;
             }
 
             $lastRequest = preg_split('#;#', array_pop($requests));
@@ -70,12 +75,17 @@ class SDKOfflineMode
             $client = new Client();
 
             $guzzleResponse = $client->request($this->apiObject->getRequest()->getMethod(), $request);
+
+            if ($guzzleResponse->getStatusCode() < 200 or $guzzleResponse->getStatusCode() > 200) {
+                return false;
+            }
+
             $stringResponse = (string) $guzzleResponse->getBody();
             file_put_contents($responseFile, $stringResponse);
 
             fclose($this->requestHandle);
 
-            return $this->apiObject->getResponseBody($stringResponse);
+            return $stringResponse;
         }
 
         if ($this->isResponseStored($request) === true) {
@@ -91,7 +101,7 @@ class SDKOfflineMode
 
                     fclose($this->requestHandle);
 
-                    return $this->apiObject->getResponseBody($stringResponse);
+                    return $stringResponse;
                 }
             }
         }

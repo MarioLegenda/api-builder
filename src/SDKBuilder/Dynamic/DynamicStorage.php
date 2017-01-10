@@ -78,7 +78,9 @@ class DynamicStorage
 
         $dynamicName = $configuration['name'];
 
-        $this->dynamics[$dynamicName] = $configuration;
+        if (!$this->hasDynamic($dynamicName)) {
+            $this->dynamics[$dynamicName] = $configuration;
+        }
     }
     /**
      * @param string $name
@@ -207,10 +209,6 @@ class DynamicStorage
                 if (!class_exists($configuration[$validKey])) {
                     throw new DynamicException('Invalid dynamic. Provided class \''.$configuration[$validKey].'\' does not exist');
                 }
-            }
-
-            if (array_key_exists($configuration['name'], $this->dynamics)) {
-                throw new DynamicException('Invalid dynamic. Dynamic with name \''.$configuration['name'].'\' already exists. Remove an already existing dynamic and add a new one');
             }
         }
     }

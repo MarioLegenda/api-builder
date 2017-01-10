@@ -97,6 +97,8 @@ abstract class AbstractSDK implements SDKInterface
         $this->processorFactory = $processorFactory;
         $this->eventDispatcher = $eventDispatcher;
         $this->validatorsProcessor = $validatorsProcessor;
+
+        $this->switchOfflineMode(false);
     }
     /**
      * @param bool $switch
@@ -104,6 +106,15 @@ abstract class AbstractSDK implements SDKInterface
      */
     public function switchOfflineMode(bool $switch) : SDKInterface
     {
+        switch ($switch) {
+            case true:
+                $this->offlineMode = new SDKOfflineMode($this);
+                break;
+            case false:
+                $this->offlineMode = null;
+                break;
+        }
+
         $this->offlineModeSwitch = $switch;
 
         return $this;
@@ -186,12 +197,8 @@ abstract class AbstractSDK implements SDKInterface
         }
 
         if ($this->offlineModeSwitch === true) {
-            if (!$this->offlineMode instanceof SDKOfflineMode) {
-                if ($this->getRequest()->getMethod() !== 'get') {
-                    throw new SDKException('If this is your development environment and you are using SDKOfflineMode tool, you can only use it with \'get\' requests. If you are on a production server, it is advised to turn SDKOfflineMode of with AbstractSDK::switchOfflineMode(false)');
-                }
-
-                $this->offlineMode = new SDKOfflineMode($this);
+            if ($this->getRequest()->getMethod() !== 'get') {
+                throw new SDKException('If this is your development environment and you are using SDKOfflineMode tool, you can only use it with \'get\' requests. If you are on a production server, it is advised to turn SDKOfflineMode off with AbstractSDK::switchOfflineMode(false)');
             }
         }
 
@@ -205,14 +212,6 @@ abstract class AbstractSDK implements SDKInterface
     public function send() : SDKInterface
     {
         $this->validatorsProcessor->validate();
-
-        if ($this->offlineModeSwitch === true) {
-            if ($this->offlineMode instanceof SDKOfflineMode) {
-                $this->responseBody = $this->offlineMode->getResponse();
-
-                return $this;
-            }
-        }
 
         $this->sendRequest();
 
@@ -304,7 +303,6 @@ abstract class AbstractSDK implements SDKInterface
             }
         }
 
-        $this->offlineMode = null;
         $this->isCompiled = false;
     }
 
@@ -329,10 +327,20 @@ abstract class AbstractSDK implements SDKInterface
             if ($this->eventDispatcher->hasListeners(SDKEvent::SEND_REQUEST_EVENT)) {
                 $this->eventDispatcher->dispatch(SDKEvent::SEND_REQUEST_EVENT, new SendRequestEvent($this, $this->getRequest()));
             } else {
-                $this->responseBody = $this->getRequest()->sendRequest($this->processed)->getBody();
+                if ($this->offlineModeSwitch === true) {
+                    $responseBody = $this->offlineMode->getResponse();
+
+                    if ($responseBody === false) {
+                        $this->responseBody = $this->getRequest()->sendRequest($this->processed)->getBody();
+                    } else {
+                        $this->responseBody = $responseBody;
+                    }
+                } else {
+                    $this->responseBody = $this->getRequest()->sendRequest($this->processed)->getBody();
+                }
             }
         } catch (\Exception $e) {
-            echo 'Generic exception caught with message: \''.$e->getMessage().'\'';
+            echo 'Generic exception caught with message: \''.$e->getMessage().'\'. Stack trace: '.$e->getTraceAsString();
         }
 
         if ($this->eventDispatcher->hasListeners(SDKEvent::POST_SEND_REQUEST_EVENT)) {

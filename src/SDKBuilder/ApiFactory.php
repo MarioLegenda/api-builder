@@ -28,41 +28,46 @@ class ApiFactory
     /**
      * @var Request $request
      */
-    protected $request;
+    private $request;
     /**
      * @var MethodParameters $methodParameters
      */
-    protected $methodParameters;
+    private $methodParameters;
     /**
      * @var EventDispatcher $eventDispatcher
      */
-    protected $eventDispatcher;
+    private $eventDispatcher;
     /**
      * @var string $apiKey
      */
-    protected $apiKey;
+    private $apiKey;
+    /**
+     * @var array $config
+     */
+    private $config;
     /**
      * AbstractApiFactory constructor.
      * @param string $apiKey
+     * @param array $config
      */
-    public function __construct(string $apiKey)
+    public function __construct(string $apiKey, array $config)
     {
         $this->apiKey = $apiKey;
+        $this->config = $config;
     }
     /**
-     * @param array $config
      * @throws SDKBuilderException
      * @return SDKInterface
      */
-    public function createApi(array $config) : SDKInterface
+    public function createApi() : SDKInterface
     {
         $processor = new Processor();
 
-        $processor->processConfiguration(new Configuration($this->apiKey), $config);
+        $processor->processConfiguration(new Configuration($this->apiKey), $this->config);
 
-        $config = $this->validateSDK($this->apiKey, $config);
+        $validatedConfig = $this->validateSDK($this->apiKey, $this->config);
 
-        $apiConfig = $config['sdk'][$this->apiKey];
+        $apiConfig = $validatedConfig['sdk'][$this->apiKey];
         $requestClass = 'SDKBuilder\\Request\\Request';
         $apiClass = 'SDKBuilder\\SDK\\GenericApi';
 
@@ -86,9 +91,9 @@ class ApiFactory
             throw new SDKBuilderException('Api class '.$apiClass.' does not exist');
         }
 
-        $this->request = $this->createRequest($requestClass, $this->apiKey, $config);
+        $this->request = $this->createRequest($requestClass, $this->apiKey, $validatedConfig);
 
-        $this->methodParameters = $this->createMethodParameters($this->apiKey, $config);
+        $this->methodParameters = $this->createMethodParameters($this->apiKey, $validatedConfig);
 
         $this->eventDispatcher = new EventDispatcher();
 

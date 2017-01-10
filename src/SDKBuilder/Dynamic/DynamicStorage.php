@@ -67,7 +67,6 @@ class DynamicStorage
     {
         return array_key_exists($name, $this->dynamics);
     }
-
     /**
      * @param array $configuration
      * @return string

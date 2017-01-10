@@ -97,8 +97,8 @@ class SDKBuilder
 
         $configuration = $this->sdkRepository[$apiKey]['config_file'];
 
-        $apiFactory = new ApiFactory($apiKey);
+        $apiFactory = new ApiFactory($apiKey, Yaml::parse(file_get_contents($configuration)));
 
-        return $apiFactory->createApi(Yaml::parse(file_get_contents($configuration)));
+        return $apiFactory->createApi();
     }
 }

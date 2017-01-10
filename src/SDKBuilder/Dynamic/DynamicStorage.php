@@ -79,7 +79,7 @@ class DynamicStorage
 
         $dynamicName = $configuration['name'];
 
-        $this->dynamics[$dynamicName] = $configuration[$dynamicName];
+        $this->dynamics[$dynamicName] = $configuration;
     }
     /**
      * @param string $name
@@ -189,13 +189,19 @@ class DynamicStorage
     {
         $allowedKeys = array('object', 'value', 'multiple_values', 'date_time', 'name');
 
+        if (!array_key_exists('name', $configuration)) {
+            throw new DynamicException('Invalid configuration. \'name\' dynamic configuration missing');
+        }
+
         foreach ($allowedKeys as $validKey) {
             if (!array_key_exists($validKey, $configuration)) {
-                throw new DynamicException('Invalid dynamic. Missing dynamic configuration \''.$validKey.'\'');
+                throw new DynamicException('Invalid dynamic. Missing dynamic configuration \''.$validKey.'\' for dynamic with name \''.$configuration['name'].'\'');
             }
 
-            if (!is_string($configuration[$validKey])) {
-                throw new DynamicException('Invalid dynamic. Every configuration entry in a dynamic has to be a string. '.gettype($configuration[$validKey]).' given for \''.$validKey.'\'');
+            if ($validKey === 'object' or $validKey === 'name') {
+                if (!is_string($configuration[$validKey])) {
+                    throw new DynamicException('Invalid dynamic. \'name\' and \'object\' dynamic configuration value have to be a string. '.gettype($configuration[$validKey]).' given for \''.$validKey.'\'');
+                }
             }
 
             if ($validKey === 'object') {

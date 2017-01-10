@@ -3,8 +3,9 @@
 namespace SDKBuilder\Dynamic;
 
 use FindingAPI\Core\Helper;
+use SDKBuilder\Processor\UrlifyInterface;
 
-abstract class AbstractDynamic implements DynamicInterface
+abstract class AbstractDynamic implements DynamicInterface, UrlifyInterface
 {
     /**
      * @var string $name

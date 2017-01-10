@@ -152,7 +152,6 @@ class DynamicStorage
 
         return $this->dynamics[$name]['object'];
     }
-
     /**
      * @param mixed $toExclude
      * @return array
@@ -162,7 +161,13 @@ class DynamicStorage
         $filtered = array();
 
         foreach ($this->dynamics as $name => $dynamic) {
-            if (in_array($name, $toExclude) === false) {
+            if (!empty($toExclude)) {
+                if (in_array($name, $toExclude) === false) {
+                    if ($dynamic['value'] !== null) {
+                        $filtered[$name] = $dynamic;
+                    }
+                }
+            } else {
                 if ($dynamic['value'] !== null) {
                     $filtered[$name] = $dynamic;
                 }

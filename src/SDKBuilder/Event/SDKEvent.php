@@ -10,4 +10,5 @@ class SDKEvent
     CONST PRE_SEND_REQUEST_EVENT = 'sdk.pre_send_request_event';
     CONST POST_SEND_REQUEST_EVENT = 'sdk.post_send_request_event';
     CONST SEND_REQUEST_EVENT = 'sdk.send_request_event';
+    CONST API_AFTER_CREATION_EVENT = 'sdk.api_after_create_event';
 }

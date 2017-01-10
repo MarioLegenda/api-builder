@@ -4,6 +4,7 @@ namespace SDKBuilder;
 
 use SDKBuilder\Dynamic\ { DynamicStorage, DynamicsValidator };
 
+use SDKBuilder\Event\ApiAfterCreationEvent;
 use SDKBuilder\Event\SDKEvent;
 use SDKBuilder\Exception\SDKBuilderException;
 
@@ -125,13 +126,19 @@ class ApiFactory
             }
         }
 
-        return new $apiClass(
+        $api = new $apiClass(
             $this->request,
             $processorFactory,
             $this->eventDispatcher,
             $this->methodParameters,
             $validatorProcessor
         );
+
+        if ($this->eventDispatcher->hasListeners(SDKEvent::API_AFTER_CREATION_EVENT)) {
+            $this->eventDispatcher->dispatch(SDKEvent::API_AFTER_CREATION_EVENT, new ApiAfterCreationEvent($api));
+        }
+
+        return $api;
     }
 
     private function validateSDK(string $apiKey, array $config) : array
@@ -181,6 +188,7 @@ class ApiFactory
             'add_processor' => SDKEvent::ADD_PROCESSORS_EVENT,
             'pre_send_request' => SDKEvent::PRE_SEND_REQUEST_EVENT,
             'post_send_request' => SDKEvent::POST_SEND_REQUEST_EVENT,
+            'api_after_create' => SDKEvent::API_AFTER_CREATION_EVENT,
         );
 
         foreach ($validListeners as $configKey => $listener) {

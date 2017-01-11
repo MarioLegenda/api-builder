@@ -48,6 +48,7 @@ abstract class AbstractRequest implements RequestInterface, RestoreDefaultsInter
     {
         $this->specialParameters = $specialParameters;
         $this->globalParameters = $globalParameters;
+
         $this->dynamicsStorage = $dynamicStorage;
 
         $this->restoreDefaults();

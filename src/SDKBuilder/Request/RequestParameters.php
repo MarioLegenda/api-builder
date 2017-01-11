@@ -9,7 +9,7 @@ class RequestParameters implements \IteratorAggregate, \ArrayAccess
     /**
      * @var array $parameters
      */
-    private $parameters;
+    private $parameters = array();
     /**
      * @var array $excluded
      */
@@ -25,6 +25,12 @@ class RequestParameters implements \IteratorAggregate, \ArrayAccess
     public function __construct(array $parameters)
     {
         foreach ($parameters as $parameterName => $parameter) {
+            if ($parameter instanceof Parameter) {
+                $this->addParameter($parameter);
+
+                continue;
+            }
+
             $this->parameters[] = new Parameter($parameterName, $parameter);
         }
     }
@@ -223,6 +229,16 @@ class RequestParameters implements \IteratorAggregate, \ArrayAccess
         }
 
         return $newKeyValuePair;
+    }
+
+    public static function copy(RequestParameters $requestParameters)
+    {
+        $newParameters = array();
+        foreach ($requestParameters as $parameter) {
+            $newParameters[] = $parameter;
+        }
+
+        return new RequestParameters($newParameters);
     }
     /**
      * @return \ArrayIterator

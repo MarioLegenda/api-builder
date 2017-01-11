@@ -165,6 +165,7 @@ abstract class AbstractSDK implements SDKInterface
      */
     public function compile() : SDKInterface
     {
+        $this->processorFactory = new ProcessorFactory();
         if ($this->getRequest()->getMethod() === 'get') {
             $this->processorFactory->registerProcessor($this->getRequest()->getMethod(), GetRequestParametersProcessor::class);
 

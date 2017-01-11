@@ -193,7 +193,7 @@ class DynamicStorage
 
     private function validateDynamic(array $configuration)
     {
-        $allowedKeys = array('object', 'value', 'multiple_values', 'date_time', 'name');
+        $allowedKeys = array('object', 'value', 'name');
 
         if (!array_key_exists('name', $configuration)) {
             throw new DynamicException('Invalid configuration. \'name\' dynamic configuration missing');

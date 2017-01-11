@@ -44,34 +44,4 @@ abstract class AbstractDynamic implements DynamicInterface, UrlifyInterface
 
         return 'Errors: '.implode(', ', $this->exceptionMessages);
     }
-
-    protected function genericValidation(array $value, $count = null) : bool
-    {
-        if (empty($value)) {
-            $this->exceptionMessages[] = 'Argument for item filter '.$this->name.' cannot be empty.';
-
-            return false;
-        }
-
-        if ($count !== null) {
-            if (count($value) > $count) {
-                $this->exceptionMessages[] = $this->name.' can receive an array argument with only '.$count.' value(s)';
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    protected function checkBoolean($value) : bool
-    {
-        if (!is_bool($value)) {
-            $this->exceptionMessages[] = $this->name.' can only accept true or false boolean values';
-
-            return false;
-        }
-
-        return true;
-    }
 }

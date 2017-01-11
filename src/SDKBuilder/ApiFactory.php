@@ -94,6 +94,10 @@ class ApiFactory
 
         $this->request = $this->createRequest($requestClass, $this->apiKey, $validatedConfig);
 
+        if (array_key_exists('dynamics', $apiConfig)) {
+            $this->injectDynamics($this->request, $apiConfig['dynamics']);
+        }
+
         $this->methodParameters = $this->createMethodParameters($this->apiKey, $validatedConfig);
 
         $this->eventDispatcher = new EventDispatcher();
@@ -231,5 +235,14 @@ class ApiFactory
         }
 
         return $config;
+    }
+
+    private function injectDynamics(RequestInterface $request, array $dynamics)
+    {
+        $dynamicStorage = $request->getDynamicStorage();
+
+        foreach ($dynamics as $dynamic) {
+            $dynamicStorage->addDynamic($dynamic);
+        }
     }
 }

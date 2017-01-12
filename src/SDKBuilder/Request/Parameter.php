@@ -9,9 +9,13 @@ use SDKBuilder\Exception\{
 class Parameter
 {
     /**
+     * @var bool $encode
+     */
+    private $encode = false;
+    /**
      * @var bool $enable
      */
-    private $enable = false;
+    private $enable = true;
     /**
      * @var string $representation
      */
@@ -78,6 +82,8 @@ class Parameter
             $this->setRepresentation($representation);
         }
 
+        $this->encode = (array_key_exists('encode', $parameter) and $parameter['encode'] === true) ? true : false;
+
         $this->deprecated = (array_key_exists('deprecated', $parameter) and $parameter['deprecated'] === true) ? true : false;
 
         $this->obsolete = (array_key_exists('obsolete', $parameter) and $parameter['obsolete'] === true) ? true : false;
@@ -87,6 +93,13 @@ class Parameter
         if (array_key_exists('error_message', $parameter)) {
             $this->setErrorMessage($parameter['error_message']);
         }
+    }
+    /**
+     * @return bool
+     */
+    public function shouldEncode() : bool
+    {
+        return $this->encode;
     }
     /**
      * @void

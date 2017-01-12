@@ -17,7 +17,6 @@ class GetRequestParametersProcessor extends AbstractProcessor implements Process
     {
         $globalParameters = $this->request->getGlobalParameters();
         $specialParameters = $this->request->getSpecialParameters();
-
         $finalUrl = '';
 
         foreach ($globalParameters as $key => $parameter) {
@@ -46,7 +45,13 @@ class GetRequestParametersProcessor extends AbstractProcessor implements Process
             }
 
             if ($specialParameter->getValue() !== null and $specialParameter->isEnabled()) {
-                $finalUrl.=$specialParameter->getRepresentation().'='.$specialParameter->getValue().'&';
+                $value = $specialParameter->getValue();
+
+                if ($specialParameter->shouldEncode()) {
+                    $value = urlencode($specialParameter->getValue());
+                }
+
+                $finalUrl.=$specialParameter->getRepresentation().'='.$value.'&';
             }
         }
 

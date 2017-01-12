@@ -140,12 +140,7 @@ class DynamicStorage
             $dynamicClass = $this->dynamics[$name]['object'];
             $dynamicValue = $this->dynamics[$name]['value'];
 
-            $configuration = array(
-                'multiple_values' => $this->dynamics[$name]['multiple_values'],
-                'date_time' => $this->dynamics[$name]['date_time'],
-            );
-
-            $this->dynamics[$name]['object'] = new $dynamicClass($name, $dynamicValue, $configuration);
+            $this->dynamics[$name]['object'] = new $dynamicClass($name, $dynamicValue, $this->dynamics[$name]);
 
             return $this->dynamics[$name]['object'];
         }

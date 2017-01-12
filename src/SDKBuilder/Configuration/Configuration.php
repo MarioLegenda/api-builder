@@ -111,6 +111,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('representation')->cannotBeEmpty()->isRequired()->end()
                                     ->scalarNode('value')->end()
+                                    ->booleanNode('encode')->defaultValue(false)->end()
                                     ->arrayNode('type')->prototype('scalar')->isRequired()->cannotBeEmpty()->end()->end()
                                     ->variableNode('valid')
                                     ->validate()

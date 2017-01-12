@@ -166,7 +166,6 @@ class RequestParameters implements \IteratorAggregate, \ArrayAccess
         foreach ($this->parameters as $parameter) {
             if ($parameter->getType()->isOptional()) {
                 $parameter->setValue(null);
-                $parameter->disable();
             }
         }
     }
@@ -229,16 +228,6 @@ class RequestParameters implements \IteratorAggregate, \ArrayAccess
         }
 
         return $newKeyValuePair;
-    }
-
-    public static function copy(RequestParameters $requestParameters)
-    {
-        $newParameters = array();
-        foreach ($requestParameters as $parameter) {
-            $newParameters[] = $parameter;
-        }
-
-        return new RequestParameters($newParameters);
     }
     /**
      * @return \ArrayIterator

@@ -3,8 +3,8 @@
 namespace SDKBuilder\SDKOfflineMode;
 
 use SDKBuilder\SDK\SDKInterface;
-use SDKOfflineMode\Exception\SDKOfflineModeException;
 use GuzzleHttp\Client;
+use SDKBuilder\SDKOfflineMode\Exception\SDKOfflineModeException;
 
 class SDKOfflineMode
 {

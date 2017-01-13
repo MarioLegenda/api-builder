@@ -2,7 +2,9 @@
 
 namespace SDKBuilder\SDKOfflineMode\Exception;
 
-class SDKOfflineModeException extends \Exception
+use SDKBuilder\Exception\AbstractException;
+
+class SDKOfflineModeException extends AbstractException
 {
 
 }

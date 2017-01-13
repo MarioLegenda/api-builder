@@ -271,12 +271,24 @@ abstract class AbstractSDK implements SDKInterface
      * @param $methodName
      * @param $arguments
      * @return RequestInterface
+     * @throws MethodParametersException
      */
     public function __call($methodName, $arguments) : RequestInterface
     {
         $method = $this->methodParameters->getMethod($methodName);
 
-        $validMethodsParameter = $this->getRequest()->getGlobalParameters()->getParameter($this->methodParameters->getValidMethodsParameter());
+        $validMethodsParameter = null;
+        if ($this->getRequest()->getGlobalParameters()->hasParameter($this->methodParameters->getValidMethodsParameter())) {
+            $validMethodsParameter = $this->getRequest()->getGlobalParameters()->getParameter($this->methodParameters->getValidMethodsParameter());
+        }
+
+        if ($this->getRequest()->getSpecialParameters()->hasParameter($this->methodParameters->getValidMethodsParameter())) {
+            $validMethodsParameter = $this->getRequest()->getSpecialParameters()->getParameter($this->methodParameters->getValidMethodsParameter());
+        }
+
+        if ($validMethodsParameter === null) {
+            throw new MethodParametersException('Valid methods specified under methods.valid_methods configuration were not found');
+        }
 
         $method->validate($validMethodsParameter);
 

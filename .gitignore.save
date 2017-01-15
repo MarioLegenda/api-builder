@@ -1,0 +1,2 @@
+                    $this->responseBody = $this->getRequest()->sendRequest($this->processed)->getBody();
+
